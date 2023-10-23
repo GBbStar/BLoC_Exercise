@@ -6,18 +6,20 @@ import 'package:todos_repository/todos_repository.dart';
 class EditTodoBloc extends Bloc<EditTodoEvent, EditTodoState> {
   EditTodoBloc({
     required TodosRepository todosRepository,
-    required Todo? initialTodo,
+    Todo? initialTodo,
   })  : _todosRepository = todosRepository,
         super(
           EditTodoState(
             initialTodo: initialTodo,
             title: initialTodo?.title ?? '',
             description: initialTodo?.description ?? '',
+            isComplete: initialTodo?.isCompleted ?? false,
           ),
         ) {
     on<EditTodoTitleChanged>(_onTitleChanged);
     on<EditTodoDescriptionChanged>(_onDescriptionChanged);
     on<EditTodoSubmitted>(_onSubmitted);
+    on<EditTodoCompletionToggled>(_onTodoCompletionToggled);
   }
 
   final TodosRepository _todosRepository;
@@ -40,17 +42,23 @@ class EditTodoBloc extends Bloc<EditTodoEvent, EditTodoState> {
     EditTodoSubmitted event,
     Emitter<EditTodoState> emit,
   ) async {
-    emit(state.copyWith(status: EditTodoStatus.loading));
+    // emit(state.copyWith(status: EditTodoStatus.loading));
     final todo = (state.initialTodo ?? Todo(title: '')).copyWith(
       title: state.title,
       description: state.description,
+      isCompleted: state.isComplete,
     );
 
     try {
       await _todosRepository.saveTodo(todo);
-      emit(state.copyWith(status: EditTodoStatus.success));
     } catch (e) {
-      emit(state.copyWith(status: EditTodoStatus.failure));
     }
+  }
+
+  Future<void> _onTodoCompletionToggled(
+      EditTodoCompletionToggled event,
+      Emitter<EditTodoState> emit,
+      ) async {
+    emit(state.copyWith(isComplete: event.isCompleted));
   }
 }

@@ -19,6 +19,19 @@ final class TodoListState extends Equatable {
 
   Iterable<Todo> get filteredTodos => filter.applyAll(todos);
 
+  int filteredTodoCount(TodosViewFilter filter) {
+    switch (filter) {
+      case TodosViewFilter.all:
+        return  todos.length;
+      case TodosViewFilter.activeOnly:
+        return  todos.where((Todo todo) => !todo.isCompleted).length;
+      case TodosViewFilter.completedOnly:
+        return  todos.where((Todo todo) => todo.isCompleted).length;
+      default:
+        return -1;
+    }
+  }
+
   TodoListState copyWith({
     TodoListStatus Function()? status,
     List<Todo> Function()? todos,

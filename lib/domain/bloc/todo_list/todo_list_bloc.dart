@@ -9,7 +9,6 @@ class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
   })  : _todosRepository = todosRepository,
         super(const TodoListState()) {
     on<TodoListSubscriptionRequested>(_onSubscriptionRequested);
-    on<TodoListTodoCompletionToggled>(_onTodoCompletionToggled);
     on<TodoListTodoDeleted>(_onTodoDeleted);
     on<TodoListUndoDeletionRequested>(_onUndoDeletionRequested);
     on<TodoListFilterChanged>(_onFilterChanged);
@@ -35,14 +34,6 @@ class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
         status: () => TodoListStatus.failure,
       ),
     );
-  }
-
-  Future<void> _onTodoCompletionToggled(
-      TodoListTodoCompletionToggled event,
-    Emitter<TodoListState> emit,
-  ) async {
-    final newTodo = event.todo.copyWith(isCompleted: event.isCompleted);
-    await _todosRepository.saveTodo(newTodo);
   }
 
   Future<void> _onTodoDeleted(

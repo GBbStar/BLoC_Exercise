@@ -6,6 +6,16 @@ sealed class EditTodoEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+final class EditTodoCompletionToggled extends EditTodoEvent {
+  const EditTodoCompletionToggled({
+    required this.isCompleted,
+  });
+
+  final bool isCompleted;
+
+  @override
+  List<Object> get props => [ isCompleted];
+}
 
 final class EditTodoTitleChanged extends EditTodoEvent {
   const EditTodoTitleChanged(this.title);

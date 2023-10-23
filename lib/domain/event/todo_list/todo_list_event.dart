@@ -31,19 +31,6 @@ final class TodoListSubscriptionRequested extends TodoListEvent {
   const TodoListSubscriptionRequested();
 }
 
-final class TodoListTodoCompletionToggled extends TodoListEvent {
-  const TodoListTodoCompletionToggled({
-    required this.todo,
-    required this.isCompleted,
-  });
-
-  final Todo todo;
-  final bool isCompleted;
-
-  @override
-  List<Object> get props => [todo, isCompleted];
-}
-
 final class TodoListTodoDeleted extends TodoListEvent {
   const TodoListTodoDeleted(this.todo);
 

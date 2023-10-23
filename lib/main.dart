@@ -19,7 +19,5 @@ Future<void> main() async {
     final todosRepository = TodosRepository(todosApi: todosApi);
 
     runApp(App(todosRepository: todosRepository));
-    // Modular Main Setting
-    // runApp(ModularApp(module: AppRoutesModular(), child: const MyApp()));
   }, (error, stackTrace) => log(error.toString(), stackTrace: stackTrace));
 }
